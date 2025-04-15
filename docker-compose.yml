@@ -1,0 +1,68 @@
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/cicd_db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+    volumes:
+      - cicd:/mnt/pipeline
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/cicd_db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+    volumes:
+      - cicd:/mnt/pipeline
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - postgres
+      - backend
+      - rabbitmq
+
+  postgres:
+    image: postgres
+    container_name: cicd-db
+    restart: always
+    shm_size: 128mb
+    ports:
+      - "54321:5432"
+    expose:
+      - 5432
+    environment:
+      POSTGRES_PASSWORD: Li930227
+      POSTGRES_DB: cicd_db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    expose:
+      - 5672
+      - 15672
+
+volumes:
+  cicd:
+    external: true

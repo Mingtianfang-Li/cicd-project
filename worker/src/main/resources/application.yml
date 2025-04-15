@@ -1,0 +1,66 @@
+server:
+  port: 8081  # Worker service runs on port 8081
+
+spring:
+  application:
+    name: cicd-worker  # Name of the worker application
+
+  datasource:
+#    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/cicd_db}
+#    username: ${DATABASE_USER:postgres}
+#    password: ${DATABASE_PASSWORD:Li930227}
+    url: ${DATABASE_URL:jdbc:postgresql://host.docker.internal:5432/cicd_db}
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:host.docker.internal}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+cicd:
+  rabbitmq:
+    host: localhost
+    job-queue: cicd-job-queue
+    port: 5672
+    username: guest
+    password: guest
+
+docker:
+  image-pull-policy: "Always"  # Ensures the latest images are pulled
+  volume-mounts: "/workspace"  # Mounted directory for Docker volumes
+
+artifacts:
+  storage-path: "/artifacts"  # Path where artifacts are stored
+  retention-days: 7  # Retention period for stored artifacts
+
+worker:
+  max-concurrent-jobs: 5  # Limits the number of jobs processed in parallel
+  artifact-storage-path: "/var/cicd/artifacts"  # Storage path for worker artifacts
+  api:
+    url: http://localhost:8081/api/worker  # Added worker API URL to match backend
+
+# Add this new section for backend configuration
+backend:
+  api:
+    url: http://localhost:8080/api  # URL for communicating with the backend service
+
+minio:
+  endpoint: http://localhost:9000
+  access-key: admin
+  secret-key: password
+  bucket: job-logs
+
+  # docker run -p 9000:9000 -p 9001:9001 \
+  #  -e "MINIO_ROOT_USER=admin" \
+  #  -e "MINIO_ROOT_PASSWORD=password" \
+  #  quay.io/minio/minio server /data --console-address ":9001"

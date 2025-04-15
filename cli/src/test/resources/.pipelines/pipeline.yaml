@@ -1,0 +1,11 @@
+name: SamplePipeline
+stages:
+  - name: Build
+    steps:
+      - run: "mvn clean install"
+  - name: Test
+    steps:
+      - run: "mvn test"
+  - name: Deploy
+    steps:
+      - run: "kubectl apply -f deployment.yaml"

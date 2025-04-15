@@ -1,0 +1,59 @@
+server:
+  port: 8080  # Backend API will run on port 8080
+
+spring:
+  application:
+    name: cicd-backend  # Name of the backend application
+
+  main:
+    allow-circular-references: true  # Allow circular references in Spring beans
+
+  datasource:
+#    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/cicd_db}
+#    username: ${DATABASE_USER:postgres}
+#    password: ${DATABASE_PASSWORD:Li930227}
+    url: ${DATABASE_URL:jdbc:postgresql://host.docker.internal:5432/cicd_db}
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Change to 'update' in dev, 'validate' in production
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:host.docker.internal}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    job-queue: cicd-job-queue
+
+# Removed RabbitMQ configuration as it's no longer needed for queue-based execution
+
+logging:
+  level:
+    root: INFO  # Default logging level
+    edu.neu.cs6510.sp25.t1: DEBUG  # Enable debugging for this project
+    org.hibernate.SQL: DEBUG  # Show SQL queries
+    org.hibernate.type.descriptor.sql: TRACE  # Show SQL parameter values
+
+# Worker configuration removed as we've disconnected from worker module
+
+# Execution queue configuration
+execution:
+  queue:
+    max-concurrent-pipelines: 5  # Maximum number of pipelines that can run concurrently
+    max-concurrent-stages: 10    # Maximum number of stages that can run concurrently
+    max-concurrent-jobs: 20      # Maximum number of jobs that can run concurrently
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

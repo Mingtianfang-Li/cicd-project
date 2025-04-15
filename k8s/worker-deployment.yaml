@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: shqiwen/worker
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URL
+              value: jdbc:postgresql://<your-docker-host>:54321/cicd_db
+            - name: DATABASE_USER
+              value: postgres
+            - name: DATABASE_PASSWORD
+              value: Li930227
+            - name: RABBITMQ_HOST
+              value: rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_USERNAME
+              value: guest
+            - name: RABBITMQ_PASSWORD
+              value: guest
+          volumeMounts:
+            - name: cicd-volume
+              mountPath: /mnt/pipeline
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: cicd-volume
+          persistentVolumeClaim:
+            claimName: cicd
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock

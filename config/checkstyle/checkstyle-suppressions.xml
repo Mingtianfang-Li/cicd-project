@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!-- Suppress VisibilityModifier warnings for all abstract classes -->
+    <suppress checks="VisibilityModifier"
+              files=".*BaseCommand\.java" />
+    <suppress checks="VisibilityModifier"
+              files=".*CliApp\.java" />
+</suppressions>

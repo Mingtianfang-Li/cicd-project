@@ -1,0 +1,6 @@
+backend:
+  url: "http://localhost:8080"
+auth:
+  token: "api-token"
+logging:
+  level: "info"

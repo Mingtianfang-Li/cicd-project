@@ -1,0 +1,92 @@
+# ==============================
+# IDE-specific files
+# ==============================
+# IntelliJ IDEA
+/.idea/
+*.iml
+*.iws
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+/.loadpath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+/.vscode/
+
+# JetBrains Rider
+.idea/
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ==============================
+# Build and Dependency Files
+# ==============================
+# Maven
+/target/
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Gradle project-specific cache
+**/.gradle/
+
+# Ignore compiled binaries
+**/bin/
+**/build/
+**/out/
+
+# Package Files (JAR, WAR, EAR)
+*.jar
+*.war
+*.ear
+
+# ==============================
+# Logs and Temporary Files
+# ==============================
+logs/
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Test output
+/test-output/
+
+# Backup files
+*~
+*.bak
+
+# ==============================
+# OS-Specific Files
+# ==============================
+.DS_Store
+Thumbs.db
+
+# ==============================
+# Environment-specific Files
+# ==============================
+.env
+
+# ==============================
+# Miscellaneous
+# ==============================
+/dist/
+/demo_plan_updated.md
+.postgres/

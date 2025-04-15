@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-pod
+  labels:
+    app: backend
+spec:
+  containers:
+    - name: rabbitmq
+      image: rabbitmq:3-management
+      ports:
+        - containerPort: 5672
+        - containerPort: 15672
+      env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: guest
+        - name: RABBITMQ_DEFAULT_PASS
+          value: guest
+
+    - name: backend
+      image: cicd-backend
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 8080
+      env:
+        - name: DATABASE_URL
+          value: jdbc:postgresql://host.minikube.internal:5432/cicd_db
+        - name: DATABASE_USER
+          value: postgres
+        - name: DATABASE_PASSWORD
+          value: postgres
+        - name: RABBITMQ_HOST
+          value: localhost
+        - name: RABBITMQ_PORT
+          value: "5672"
+        - name: RABBITMQ_USERNAME
+          value: guest
+        - name: RABBITMQ_PASSWORD
+          value: guest
+      volumeMounts:
+        - name: cicd-volume
+          mountPath: /mnt/pipeline
+
+  volumes:
+    - name: cicd-volume
+      emptyDir: {}

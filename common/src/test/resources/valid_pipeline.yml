@@ -1,0 +1,16 @@
+pipeline:
+  name: "Test Pipeline"
+  stages:
+    - name: "Build"
+    - name: "Test"
+  jobs:
+    - name: "Compile"
+      stage: "Build"
+      image: "alpine:latest"
+      script:
+        - echo "Compiling..."
+    - name: "Run Tests"
+      stage: "Test"
+      image: "alpine:latest"
+      script:
+        - echo "Running tests..."

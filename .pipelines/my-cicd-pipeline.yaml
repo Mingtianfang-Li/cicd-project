@@ -1,0 +1,48 @@
+name: my-cicd-pipeline
+
+stages:
+  - build
+  - test
+  - doc
+  - deploy
+
+jobs:
+  - name: "compile"
+    dockerImage: "openjdk:21-jdk"
+    script:
+      - "sleep 1h"
+    allowFailure: False
+    stage: "build"
+
+  - name: "unit-tests"
+    dockerImage: "openjdk:21-jdk"
+    script:
+      - "./gradlew test"
+    allowFailure: False
+    stage: "test"
+    dependencies: ["compile"]
+
+  - name: "generate-docs"
+    dockerImage: "openjdk:21-jdk"
+    script:
+      - "./gradlew javadoc"
+    allowFailure: False
+    stage: "doc"
+    dependencies: [ "compile" ]
+
+  - name: "build-jar"
+    dockerImage: "gradle:8.12-jdk21"
+    script:
+      - "./gradlew bootJar"
+    allowFailure: False
+    stage: "deploy"
+    dependencies: ["compile", "unit-tests"]
+
+  - name: "dockerize"
+    dockerImage: "docker:latest"
+    script:
+      - "docker build -t my-cicd-app ."
+      - "docker run -d -p 5000:5000 my-cicd-app"
+    allowFailure: False
+    stage: "deploy"
+    dependencies: ["build-jar"]

@@ -1,0 +1,20 @@
+pipeline:
+  name: InvalidPipeline
+  stages:
+    - build
+    - test
+
+jobs:
+  - name: BuildJob
+    stage: non_existent_stage  # Invalid stage reference
+    image: maven:3.8.3-openjdk-17
+    script:
+      - mvn clean compile
+
+  - name: TestJob
+    stage: test
+    image: maven:3.8.3-openjdk-17
+    needs:
+      - NonExistentJob  # Invalid dependency
+    script:
+      - mvn test

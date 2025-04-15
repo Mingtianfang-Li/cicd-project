@@ -1,0 +1,11 @@
+name: InvalidPipeline
+stages:
+  - name: Build
+    steps:
+      - run: "mvn clean install"
+  - name: Test
+    steps:
+      - run:  
+  - name: Deploy
+    steps:
+      - command: "kubectl apply -f deployment.yaml" 
