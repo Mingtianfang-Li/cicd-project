@@ -5,9 +5,12 @@ A containerized CI/CD pipeline system with CLI interface for executing and monit
 **Team Project for CS6510 - Software Engineering, Spring 2025**  
 **Team 1 | Date**: April 12, 2025
 **Authors**:
-- Wenxue Fang
-- Shenqian Wen
+- Wenxue Fang @ https://github.com/ShqiW
+- Shenqian Wen @ https://github.com/Vincamine
 - Mingtianfang Li
+
+**Special Thanks**
+A heartfelt thank you to my amazing teammates, Wenxue Fang and Shenqian Wen, for their unwavering dedication, sharp problem-solving skills, and collaborative spirit throughout this project. Wenxue’s depth in design thinking and Shenqian’s attention to detail made tackling tough challenges not only manageable but enjoyable. It’s been a real privilege to build alongside both of you — here’s to all the late nights, refactors, and git conflicts we crushed together!
 
 ## Client Usage Guide
 
